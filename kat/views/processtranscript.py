@@ -2,7 +2,7 @@ from flask import render_template
 from flask.views import MethodView
 
 
-class TranscriptionFormInterface(MethodView):
+class TranscriptProcessor(MethodView):
 
     methods = ['GET','POST']
 
