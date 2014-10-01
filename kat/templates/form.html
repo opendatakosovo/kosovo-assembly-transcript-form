@@ -22,10 +22,7 @@ $(document).ready(function(){
       $('#agenda').children().last().remove();
     });
   });
-</script>
- 
 
-<script>
   function addSpeaker(){
     var previousSpeakerElementId = $('#speakers-container').children().last().attr('id');
     var previousSpeakerId = parseInt(previousSpeakerElementId.charAt(previousSpeakerElementId.length-1));
@@ -64,6 +61,37 @@ $(document).ready(function(){
     $('#speaker-paragraphs-' + speakerId).children().last().remove();
   }
 
+  function submit_form(){
+    var agendaJson = buildAgendaJson();
+    alert(agendaJson);
+    var speechJson = buildSpeechJson();
+  }
+  function buildAgendaJson(){
+    var agendaArray = [];
+
+    $('#agenda').children('textarea').each(function () {
+        // alert(this.value); "this" is the current element in the loop
+        agendaArray.push(this.value);
+    
+    agendaJSON = {
+          _index: 'kosovoassemblytranscripts',
+          _type: "agenda",
+          _id: "xxxx",
+          _source: {
+          session_title: "I MBLEDHJES PLENARE TË KUVENDIT TË REPUBLIKËS SË KOSOVËS, E MBAJTUR MË 23 PRILL 2014 (Ora 16:00)",
+          date: "23 PRILL 2014 (Ora 16:00)",
+          adenda_id: 1,
+          text: agendaArray
+          }};
+    });
+    return agendaJSON;
+
+    
+  }
+  function buildSpeechJson(){
+    // TODO: IMPLEMENT
+  }
+
 </script>
 
 <style>
@@ -72,7 +100,7 @@ td{
 }
 </style>
  
-<form method="POST" action="{{ url_for('transcription') }}" class="form-horizontal">
+<form>
   <div>
     <h3>Fill the form.</h3>
     <table>
@@ -133,10 +161,11 @@ td{
 
     <br/>
     <div align="center">
-        <button type="submit" class="btn btn-primary">Vazhdo</button>
+        <button  type='button' onClick="javscript:submit_form()">Vazhdo</button>
     </div>
     <br/>
 </form>
+
 
 <br><br>
 {% endblock %}
