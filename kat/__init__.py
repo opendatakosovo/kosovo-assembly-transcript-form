@@ -1,11 +1,9 @@
 import os
 import ConfigParser
-import logging
 
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
-from flask.views import View
 #from flask.ext.pymongo import PyMongo
 
 
@@ -51,8 +49,6 @@ def load_config(app):
     config.read(config_filepath)
 
     # Set up config properties
-    #app.config['USERNAME'] = config.get('Application', 'USERNAME')
-    #app.config['PASSWORD'] = config.get('Application', 'PASSWORD')
     app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
 
     #app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
@@ -66,10 +62,6 @@ def load_config(app):
         app.config['LOG_PATH'] = app_dir + '/' + log_path
 
     app.config['LOG_LEVEL'] = config.get('Logging', 'LEVEL').upper()
-
-    # Set the secret key, keep this really secret. We need this for session manager.
-    # Check out sectopm "How to generate good secret keys" in http://flask.pocoo.org/docs/quickstart/
-    app.secret_key = config.get('Application', 'SECRET_KEY')
 
 
 def configure_logging(app):
@@ -94,7 +86,7 @@ def configure_logging(app):
 
 
 # Import forms
-from views.transcriptionForm import TranscriptionFormInterface
+from views.processtranscript import TranscriptProcessor
 
 
 def register_url_rules(app):
@@ -104,4 +96,6 @@ def register_url_rules(app):
     '''
 
     # Index page form.
-    app.add_url_rule('/', view_func=TranscriptionFormInterface.as_view('transcription'))
+    app.add_url_rule(
+        '/',
+        view_func=TranscriptProcessor.as_view('transcription'))
