@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<script>
+	$(document).ready(function() {
+		$('.btn').button();
+	});
+</script>
+<script type="text/javascript">
+var numberOfSpeaker = 0;
+$(document).ready(function(){
+ 
+    var counter = 2;
+ 
+    $("#addSpeech").click(function () {
+ 
+    if(counter>10){
+            alert("Only 10 textboxes allow");
+            return false;
+    }   
+    
+    var newTextBoxDiv = $(document.createElement('div'))
+         .attr("id", 'SpeechParagraphs' + counter);
+ 
+    newTextBoxDiv.after().html('<div class="form-group"> Speech: <textarea name="spaker'+numberOfSpeaker+"speech"+counter+'" rows="4" cols="50"></textarea> </div>');
+ 
+    newTextBoxDiv.appendTo("#SpeechParagraphs");
+ 
+    
+    counter++;
+     });
+ 
+     $("#removeSpeech").click(function () {
+    if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }   
+ 
+    counter--;
+ 
+        $("#SpeechParagraphs" + counter).remove();
+ 
+     });
+ 
+     $("#getButtonValue").click(function () {
+ 
+    var msg = '';
+    for(i=1; i<counter; i++){
+      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
+    }
+          alert(msg);
+     });
+  });
+ 
+$(document).ready(function(){
+ 
+    var counter = 2;
+ 
+    $("#addAgenda").click(function () {
+ 
+    if(counter>10){
+            alert("Only 10 textboxes allow");
+            return false;
+    }   
+ 
+    var newTextBoxDiv = $(document.createElement('div'))
+         .attr("id", 'AgendaParagraphs' + counter);
+ 
+    newTextBoxDiv.after().html('<div class="form-group"> Agenda: <textarea name="agenda'+counter+'" rows="4" cols="50"></textarea> </div>');
+ 
+    newTextBoxDiv.appendTo("#AgendaParagraphs");
+ 
+ 
+    counter++;
+     });
+ 
+     $("#removeAgenda").click(function () {
+    if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }   
+ 
+    counter--;
+ 
+        $("#AgendaParagraphs" + counter).remove();
+ 
+     });
+ 
+     $("#getButtonValue").click(function () {
+ 
+    var msg = '';
+    for(i=1; i<counter; i++){
+      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
+    }
+          alert(msg);
+     });
+  });
+ 
+$(document).ready(function(){
+ 
+    var counter = 2;
+ 
+    $("#addSpeaker").click(function () {
+ 
+    if(counter>10){
+            alert("Only 10 textboxes allow");
+            return false;
+    }   
+ 
+    var newTextBoxDiv = $(document.createElement('div'))
+         .attr("id", 'Speaker' + counter);
+ 
+    newTextBoxDiv.after().html('<div class="form-group"> Speaker: <input type="text" id="speaker" name="speaker"></br ></br ></div>');
+ 
+    newTextBoxDiv.appendTo("#Speaker");
+ 
+    numberOfSpeaker++;
+    counter++;
+     });
+ 
+     $("#removeSpeaker").click(function () {
+    if(counter==1){
+          alert("No more textbox to remove");
+          return false;
+       }   
+ 
+    counter--;
+ 
+        $("#Speaker" + counter).remove();
+ 
+     });
+ 
+     $("#getButtonValue").click(function () {
+ 
+    var msg = '';
+    for(i=1; i<counter; i++){
+      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
+    }
+          alert(msg);
+     });
+  });
+</script>
+ 
+<form method="POST" action="{{ url_for('transcription') }}" class="form-horizontal">
+
+    <div>
+        <h3>Fill the form.</h3>
+            <div class="form-group">
+                Date: <input type="date" name="date" max="1979-12-31"></br ></br >
+                Main Speaker: <input type="text" id="main-speaker" name="main_speaker"></br >
+            </div>
+            <div id="AgendaParagraphs" class="form-group">
+                Agenda: <textarea id="agenda" name="agenda" rows="4" cols="50"></textarea>
+            </div>
+            <input type='button' value='Add Agenda' id='addAgenda'>
+            <input type='button' value='Remove Agenda' id='removeAgenda'></br ></br >
+            Speaker: <input type="text" id="speaker" name="speaker"></br ></br >
+            <div id='SpeechParagraphs' class="form-group">
+                <div id="TextBoxDiv1">
+                    
+                   </br > Speech: <textarea name="speech" rows="4" cols="50"></textarea>
+                </div>
+            </div>
+
+            <input type='button' value='Add Button' id='addSpeech'>
+            <input type='button' value='Remove Button' id='removeSpeech'>
+            <div id='Speaker' class="form-group">
+            </div>
+            <input type='button' value='Add Speaker' id='addSpeaker'>
+
+
+    </div>
+
+    <br/>
+    <div align="center">
+        <button type="submit" class="btn btn-primary">Vazhdo</button>
+    </div>
+    <br/>
+</form>
+
+<br><br>
+{% endblock %}

@@ -1,4 +1,5 @@
-kosovo-assembly-transcript-form
-===============================
+Kosovo Assembly Transcript Form
+==========================
 
-Input form for transcripts.
+A form to register the transcript speeches of the deputies of Kosovo Assembly
+
