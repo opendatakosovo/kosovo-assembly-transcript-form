@@ -7,169 +7,129 @@
     });
 </script>
 <script type="text/javascript">
-var numberOfSpeaker = 0;
-$(document).ready(function(){
- 
-    var counter = 2;
- 
-    $("#addSpeech").click(function () {
- 
-    if(counter>10){
-            alert("Only 10 textboxes allow");
-            return false;
-    }   
-    
-    var newTextBoxDiv = $(document.createElement('div'))
-         .attr("id", 'SpeechParagraphs' + counter);
- 
-    newTextBoxDiv.after().html('<div class="form-group"> Speech: <textarea name="spaker'+numberOfSpeaker+"speech"+counter+'" rows="4" cols="50"></textarea> </div>');
- 
-    newTextBoxDiv.appendTo("#SpeechParagraphs");
- 
-    
-    counter++;
-     });
- 
-     $("#removeSpeech").click(function () {
-    if(counter==1){
-          alert("No more textbox to remove");
-          return false;
-       }   
- 
-    counter--;
- 
-        $("#SpeechParagraphs" + counter).remove();
- 
-     });
- 
-     $("#getButtonValue").click(function () {
- 
-    var msg = '';
-    for(i=1; i<counter; i++){
-      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
-    }
-          alert(msg);
-     });
-  });
  
 $(document).ready(function(){
- 
-    var counter = 2;
- 
     $("#addAgenda").click(function () {
+      var previousAgendaElementId = $('#agenda').children().last().attr('id');
+      var previousAgendaId = parseInt(previousAgendaElementId.charAt(previousAgendaElementId.length-1));
+
+      var newAgendaId = previousAgendaId + 1;
+   
+      $('#agenda').append('<br><textarea id="agendum-' + newAgendaId + '" rows="4" cols="50"></textarea>');
+    });
  
-    if(counter>10){
-            alert("Only 10 textboxes allow");
-            return false;
-    }   
- 
-    var newTextBoxDiv = $(document.createElement('div'))
-         .attr("id", 'AgendaParagraphs' + counter);
- 
-    newTextBoxDiv.after().html('<div class="form-group"> Agenda: <textarea name="agenda'+counter+'" rows="4" cols="50"></textarea> </div>');
- 
-    newTextBoxDiv.appendTo("#AgendaParagraphs");
- 
- 
-    counter++;
-     });
- 
-     $("#removeAgenda").click(function () {
-    if(counter==1){
-          alert("No more textbox to remove");
-          return false;
-       }   
- 
-    counter--;
- 
-        $("#AgendaParagraphs" + counter).remove();
- 
-     });
- 
-     $("#getButtonValue").click(function () {
- 
-    var msg = '';
-    for(i=1; i<counter; i++){
-      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
-    }
-          alert(msg);
-     });
-  });
- 
-$(document).ready(function(){
- 
-    var counter = 2;
- 
-    $("#addSpeaker").click(function () {
- 
-    if(counter>10){
-            alert("Only 10 textboxes allow");
-            return false;
-    }   
- 
-    var newTextBoxDiv = $(document.createElement('div'))
-         .attr("id", 'Speaker' + counter);
- 
-    newTextBoxDiv.after().html('<div class="form-group"> Speaker: <input type="text" id="speaker" name="speaker"></br ></br ></div>');
- 
-    newTextBoxDiv.appendTo("#Speaker");
- 
-    numberOfSpeaker++;
-    counter++;
-     });
- 
-     $("#removeSpeaker").click(function () {
-    if(counter==1){
-          alert("No more textbox to remove");
-          return false;
-       }   
- 
-    counter--;
- 
-        $("#Speaker" + counter).remove();
- 
-     });
- 
-     $("#getButtonValue").click(function () {
- 
-    var msg = '';
-    for(i=1; i<counter; i++){
-      msg += "\n Paragraph #" + i + " : " + $('#paragraph' + i).val();
-    }
-          alert(msg);
-     });
+    $("#removeAgenda").click(function () {
+      $('#agenda').children().last().remove();
+    });
   });
 </script>
  
+
+<script>
+  function addSpeaker(){
+    var previousSpeakerElementId = $('#speakers-container').children().last().attr('id');
+    var previousSpeakerId = parseInt(previousSpeakerElementId.charAt(previousSpeakerElementId.length-1));
+
+    var newSpeakerId = previousSpeakerId + 1;
+
+    var speakerElement = '<br><br><div id="speaker-container-' + newSpeakerId + '"> \
+      <div id="speaker-name-' + newSpeakerId + '"> \
+        <input type="text" id="speaker-name-' + newSpeakerId + '"> \
+      </div> \
+      <div id="speaker-paragraphs-' + newSpeakerId + '"> \
+        <textarea id="speaker-' + newSpeakerId + '-paragraph-1" rows="4" cols="50"></textarea> \
+      </div> \
+        <div id="speaker-buttons-' + newSpeakerId + '"> \
+        <input type="button" value="Add Paragraph" onClick="javascript:addParagraph(' + newSpeakerId + ');"> \
+        <input type="button" value="Remove Paragraph" onClick="javascript:removeParagraph(' + newSpeakerId + ');"> \
+      </div> \
+    </div>';
+
+    $("#speakers-container").append(speakerElement);
+  }
+
+  function addParagraph(speakerId){
+    var speakersLastParagraphElementId = $('#speaker-paragraphs-' + speakerId).children().last().attr('id');
+    var lastParagraphId = parseInt(speakersLastParagraphElementId.charAt(speakersLastParagraphElementId.length-1));
+
+    var newParagraphId = lastParagraphId + 1;
+
+    var speakerParagraphElemment = '<br><textarea id="speaker-' + speakerId + '-paragraph-' + newParagraphId + '" rows="4" cols="50"></textarea>';
+
+    $('#speaker-paragraphs-' + speakerId).append(speakerParagraphElemment);
+
+  }
+
+  function removeParagraph(speakerId){
+    $('#speaker-paragraphs-' + speakerId).children().last().remove();
+  }
+
+</script>
+
+<style>
+td{
+  padding:15px;
+}
+</style>
+ 
 <form method="POST" action="{{ url_for('transcription') }}" class="form-horizontal">
-
-    <div>
-        <h3>Fill the form.</h3>
-            <div class="form-group">
-                Date: <input type="date" name="date" max="1979-12-31"></br ></br >
-                Main Speaker: <input type="text" id="main-speaker" name="main_speaker"></br >
-            </div>
-            <div id="AgendaParagraphs" class="form-group">
-                Agenda: <textarea id="agenda" name="agenda" rows="4" cols="50"></textarea>
-            </div>
+  <div>
+    <h3>Fill the form.</h3>
+    <table>
+      <tr>
+        <td>Title</td>
+        <td><input type="text" id="title"></td>
+      </tr>
+      <tr>
+        <td>Date</td>
+        <td><input type="text" id="date"></td>
+      </tr>
+      <tr>
+        <td>Main Speaker</td>
+        <td><input type="text" id="main-speaker"></td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">
+          Agenda
+        </td>
+        <td>
+          <div id="agenda">
+            <textarea id="agendum-1" rows="4" cols="50"></textarea>
+          </div>
+          <div id="agenda-butons">
             <input type='button' value='Add Agenda' id='addAgenda'>
-            <input type='button' value='Remove Agenda' id='removeAgenda'></br ></br >
-            Speaker: <input type="text" id="speaker" name="speaker"></br ></br >
-            <div id='SpeechParagraphs' class="form-group">
-                <div id="TextBoxDiv1">
-                    
-                   </br > Speech: <textarea name="speech" rows="4" cols="50"></textarea>
-                </div>
+            <input type='button' value='Remove Agenda' id='removeAgenda'>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">
+          Speaker
+        </td>
+        <td>
+          <div id="speakers-container">
+            <div id="speaker-container-1">
+              <div id="speaker-name-1">
+                <input type="text" id="speaker-name-1">
+              </div>
+              <div id="speaker-paragraphs-1">
+                <textarea id="speaker-1-paragraph-1" rows="4" cols="50"></textarea>
+              </div>
+                <div id="speaker-buttons-1">
+                <input type='button' value='Add Paragraph' onClick='javascript:addParagraph(1);'>
+                <input type='button' value='Remove Paragraph' onClick='javascript:removeParagraph(1);'>
+              </div>
             </div>
-
-            <input type='button' value='Add Button' id='addSpeech'>
-            <input type='button' value='Remove Button' id='removeSpeech'>
-            <div id='Speaker' class="form-group">
-            </div>
-            <input type='button' value='Add Speaker' id='addSpeaker'>
-
-
-    </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type='button' value='Add Speaker' onClick='javascript:addSpeaker()'>
+        </td>
+      </tr>
+    </table>
+  </div>
 
     <br/>
     <div align="center">
