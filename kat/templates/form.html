@@ -29,12 +29,12 @@ $(document).ready(function(){
 
     var newSpeakerId = previousSpeakerId + 1;
 
-    var speakerElement = '<br><br><div id="speaker-container-' + newSpeakerId + '"> \
-      <div id="speaker-name-' + newSpeakerId + '"> \
-        <input type="text" id="speaker-name-' + newSpeakerId + '"> \
+    var speakerElement = '<br><br><div id="speaker-container-' + newSpeakerId + '" class="speech"> \
+      <div id="speaker-name-' + newSpeakerId + '" class="speech"> \
+        <input type="text" id="speaker-name-' + newSpeakerId + '" class="speech"> \
       </div> \
-      <div id="speaker-paragraphs-' + newSpeakerId + '"> \
-        <textarea id="speaker-' + newSpeakerId + '-paragraph-1" rows="4" cols="50"></textarea> \
+      <div id="speaker-paragraphs-' + newSpeakerId + '" class="speech"> \
+        <textarea id="speaker-' + newSpeakerId + '-paragraph-1" rows="4" cols="50" class="speech"></textarea> \
       </div> \
         <div id="speaker-buttons-' + newSpeakerId + '"> \
         <input type="button" value="Add Paragraph" onClick="javascript:addParagraph(' + newSpeakerId + ');"> \
@@ -51,7 +51,7 @@ $(document).ready(function(){
 
     var newParagraphId = lastParagraphId + 1;
 
-    var speakerParagraphElemment = '<br><textarea id="speaker-' + speakerId + '-paragraph-' + newParagraphId + '" rows="4" cols="50"></textarea>';
+    var speakerParagraphElemment = '<br><textarea id="speaker-' + speakerId + '-paragraph-' + newParagraphId + '" rows="4" cols="50" class="speech"></textarea>';
 
     $('#speaker-paragraphs-' + speakerId).append(speakerParagraphElemment);
 
@@ -62,34 +62,48 @@ $(document).ready(function(){
   }
 
   function submit_form(){
-    var agendaJson = buildAgendaJson();
-    alert(agendaJson);
-    var speechJson = buildSpeechJson();
+    var agendaArray = buildAgendaJson();
+
+    buildSpeechJson();
   }
   function buildAgendaJson(){
     var agendaArray = [];
 
+    var agenda_id = 1;
     $('#agenda').children('textarea').each(function () {
-        // alert(this.value); "this" is the current element in the loop
-        agendaArray.push(this.value);
-    
-    agendaJSON = {
-          _index: 'kosovoassemblytranscripts',
-          _type: "agenda",
-          _id: "xxxx",
-          _source: {
+      agendaJSON = {
+        _index: 'kosovoassemblytranscripts',
+        _type: "agenda",
+        _id: "xxxx",
+        _source: {
           session_title: "I MBLEDHJES PLENARE TË KUVENDIT TË REPUBLIKËS SË KOSOVËS, E MBAJTUR MË 23 PRILL 2014 (Ora 16:00)",
           date: "23 PRILL 2014 (Ora 16:00)",
-          adenda_id: 1,
-          text: agendaArray
-          }};
-    });
-    return agendaJSON;
+          agenda_id: agenda_id,
+          text: this.value
+        }
+      };
 
-    
+      agendaArray.push(agendaJSON);
+
+      agenda_id = agenda_id + 1;
+    });
+
+    return agendaArray;
   }
+
   function buildSpeechJson(){
-    // TODO: IMPLEMENT
+
+    $('#speakers-container').children('.speech').each(function (index){
+      speakerElements = $(this).children('.speech');
+
+      speakerName = $(speakerElements[0]).children('.speech')[0].value;
+      console.log(speakerName);
+
+      $(speakerElements[1]).children('.speech').each(function (){
+        speakerParagraph = $(this)[0].value;
+        console.log(speakerParagraph);
+      });
+    });
   }
 
 </script>
@@ -136,12 +150,12 @@ td{
         </td>
         <td>
           <div id="speakers-container">
-            <div id="speaker-container-1">
-              <div id="speaker-name-1">
-                <input type="text" id="speaker-name-1">
+            <div id="speaker-container-1" class="speech">
+              <div id="speaker-name-1" class="speech">
+                <input type="text" id="speaker-name-1" class="speech">
               </div>
-              <div id="speaker-paragraphs-1">
-                <textarea id="speaker-1-paragraph-1" rows="4" cols="50"></textarea>
+              <div id="speaker-paragraphs-1" class="speech">
+                <textarea id="speaker-1-paragraph-1" rows="4" cols="50" class="speech"></textarea>
               </div>
                 <div id="speaker-buttons-1">
                 <input type='button' value='Add Paragraph' onClick='javascript:addParagraph(1);'>
