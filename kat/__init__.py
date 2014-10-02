@@ -4,11 +4,12 @@ import ConfigParser
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
-#from flask.ext.pymongo import PyMongo
+from flask.ext.pymongo import PyMongo
+
 
 
 # Create MongoDB database object.
-#mongo = PyMongo()
+mongo = PyMongo()
 
 def create_app():
     ''' Create the Flask app.
@@ -27,7 +28,7 @@ def create_app():
 
     # Init app for use with this PyMongo
     # http://flask-pymongo.readthedocs.org/en/latest/#flask_pymongo.PyMongo.init_app
-    #mongo.init_app(app, config_prefix='MONGO')
+    mongo.init_app(app, config_prefix='MONGO')
 
     return app
 
@@ -51,7 +52,7 @@ def load_config(app):
     # Set up config properties
     app.config['SERVER_PORT'] = config.get('Application', 'SERVER_PORT')
 
-    #app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
+    app.config['MONGO_DBNAME'] = config.get('Mongo', 'DB_NAME')
 
     # Logging path might be relative or starts from the root.
     # If it's relative then be sure to prepend the path with the application's root directory path.
@@ -97,5 +98,5 @@ def register_url_rules(app):
 
     # Index page form.
     app.add_url_rule(
-        '/',
-        view_func=TranscriptProcessor.as_view('transcription'))
+        '/form',
+        view_func=TranscriptProcessor.as_view('transcription'),methods=['POST','GET'])

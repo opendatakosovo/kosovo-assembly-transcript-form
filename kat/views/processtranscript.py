@@ -1,16 +1,22 @@
 from flask import render_template
-from flask.views import MethodView
+from flask.views import View
+from flask import request
+from kat import mongo
+import json
 
 
-class TranscriptProcessor(MethodView):
+class TranscriptProcessor(View):
 
-    methods = ['GET','POST']
+    methods = ['GET', 'POST']
 
-    def get(self):
+    def dispatch_request(self):
         '''
         '''
-        return render_template('form.html')
+        #Convert the Transcript to JSON
+        transcript = json.loads(request.data)
 
-    def post():
-        print 'index data to ES.'
+        #If transcript is set, insert the json to mongodb
+        if transcript:
+            mongo.db.transcripts.insert(transcript)
+        print(transcript)
         return render_template('form.html')

@@ -56,6 +56,7 @@ $(document).ready(function(){
     $('#speaker-paragraphs-' + speakerId).append(speakerParagraphElemment);
 
   }
+ 
 
   function removeParagraph(speakerId){
     $('#speaker-paragraphs-' + speakerId).children().last().remove();
@@ -64,23 +65,28 @@ $(document).ready(function(){
   function submit_form(){
     var agendaArray = buildAgendaJson();
 
-    buildSpeechJson();
+    var speechArray = buildSpeechJson();
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json",
+      url: "{{ url_for("transcription") }}",
+      data: JSON.stringify({ agenda: agendaArray, speech: speechArray }),
+      dataType: "JSON"
+    });
+
   }
+
   function buildAgendaJson(){
     var agendaArray = [];
 
     var agenda_id = 1;
     $('#agenda').children('textarea').each(function () {
       agendaJSON = {
-        _index: 'kosovoassemblytranscripts',
-        _type: "agenda",
-        _id: "xxxx",
-        _source: {
           session_title: "I MBLEDHJES PLENARE TË KUVENDIT TË REPUBLIKËS SË KOSOVËS, E MBAJTUR MË 23 PRILL 2014 (Ora 16:00)",
           date: "23 PRILL 2014 (Ora 16:00)",
           agenda_id: agenda_id,
           text: this.value
-        }
       };
 
       agendaArray.push(agendaJSON);
@@ -92,7 +98,9 @@ $(document).ready(function(){
   }
 
   function buildSpeechJson(){
-
+    var title = $('#title').value;
+    speechArray = [];
+    speakerParagraph = [];
     $('#speakers-container').children('.speech').each(function (index){
       speakerElements = $(this).children('.speech');
 
@@ -100,10 +108,22 @@ $(document).ready(function(){
       console.log(speakerName);
 
       $(speakerElements[1]).children('.speech').each(function (){
-        speakerParagraph = $(this)[0].value;
+        speakerParagraph.push($(this)[0].value);
         console.log(speakerParagraph);
+
       });
+      speechJSON = {
+              session_title: title,
+              date: "23 PRILL 2014 (Ora 16:00)",
+              speech_id: 1,
+              speaker: speakerName,
+              text: speakerParagraph
+          };
+      speechArray.push(speechJSON);
+      speakerParagraph = [];
     });
+    
+    return speechArray;
   }
 
 </script>
