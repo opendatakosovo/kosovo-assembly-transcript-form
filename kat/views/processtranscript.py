@@ -13,10 +13,10 @@ class TranscriptProcessor(View):
         '''
         '''
         #Convert the Transcript to JSON
-        transcript = json.loads(request.data)
 
+        transcript = request.data
         #If transcript is set, insert the json to mongodb
         if transcript:
-            mongo.db.transcripts.insert(transcript)
-        print(transcript)
+            mongo.db.transcripts.insert(json.loads(transcript))
+
         return render_template('form.html')
