@@ -12,10 +12,10 @@ class TranscriptProcessor(View):
     def dispatch_request(self):
         '''
         '''
-        #Convert the Transcript to JSON
 
         transcript = request.data
-        #If transcript is set, insert the json to mongodb
+
+        #Convert the Transcript to JSON and insert the json to mongodb
         if transcript:
             mongo.db.transcripts.insert(json.loads(transcript))
 

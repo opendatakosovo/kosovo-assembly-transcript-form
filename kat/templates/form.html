@@ -79,12 +79,15 @@ $(document).ready(function(){
 
   function buildAgendaJson(){
     var agendaArray = [];
-
+    var transcript_title = $('#title').val();
+    var datE = $('#date').val();
+    var the_main_speaker = $('#main-speaker').val();
     var agenda_id = 1;
     $('#agenda').children('textarea').each(function () {
       agendaJSON = {
-          session_title: "I MBLEDHJES PLENARE TË KUVENDIT TË REPUBLIKËS SË KOSOVËS, E MBAJTUR MË 23 PRILL 2014 (Ora 16:00)",
-          date: "23 PRILL 2014 (Ora 16:00)",
+          session_title: transcript_title,
+          main_speaker: the_main_speaker,
+          date: datE,
           agenda_id: agenda_id,
           text: this.value
       };
@@ -98,9 +101,13 @@ $(document).ready(function(){
   }
 
   function buildSpeechJson(){
-    var title = $('#title').value;
+    var transcript_title = $('#title').val();
+    var datE = $('#date').val();
+    var main_speaker = $('#main-speaker').val();
     speechArray = [];
     speakerParagraph = [];
+    speaker_id = 1;
+
     $('#speakers-container').children('.speech').each(function (index){
       speakerElements = $(this).children('.speech');
 
@@ -113,12 +120,14 @@ $(document).ready(function(){
 
       });
       speechJSON = {
-              session_title: title,
-              date: "23 PRILL 2014 (Ora 16:00)",
-              speech_id: 1,
+              session_title: transcript_title,
+              main_speaker: main_speaker,
+              date: datE,
+              speech_id: speaker_id,
               speaker: speakerName,
               text: speakerParagraph
           };
+      speaker_id = speaker_id + 1;
       speechArray.push(speechJSON);
       speakerParagraph = [];
     });
@@ -144,7 +153,7 @@ td{
       </tr>
       <tr>
         <td>Date</td>
-        <td><input type="text" id="date"></td>
+        <td><input type="date" id="date"></td>
       </tr>
       <tr>
         <td>Main Speaker</td>
