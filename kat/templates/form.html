@@ -112,11 +112,9 @@ $(document).ready(function(){
       speakerElements = $(this).children('.speech');
 
       speakerName = $(speakerElements[0]).children('.speech')[0].value;
-      console.log(speakerName);
 
       $(speakerElements[1]).children('.speech').each(function (){
         speakerParagraph.push($(this)[0].value);
-        console.log(speakerParagraph);
 
       });
       speechJSON = {

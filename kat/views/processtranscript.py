@@ -23,7 +23,10 @@ class TranscriptProcessor(View):
         for doc in transcripts_cursor:
             for speaker in doc["speech"]:
                 party =  utils.get_mp_party(slugify(speaker["speaker"]), str(speaker["date"])[:4])
-                mongo.db.transcripts.update({"speech.speaker": speaker["speaker"],"speech.date": speaker["date"]},{"$set":{"speech.$.party": party}})
+                if party == "None":
+                    mongo.db.transcripts.update({"speech.speaker": speaker["speaker"],"speech.date": speaker["date"]},{"$set":{"speech.$.party": "Other"}})
+                else:
+                    mongo.db.transcripts.update({"speech.speaker": speaker["speaker"],"speech.date": speaker["date"]},{"$set":{"speech.$.party": party}})
                 print str(speaker["speaker"]) + "s party was set to " + str(party)
 
         return render_template('form.html')
